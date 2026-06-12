@@ -16,7 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index),
+    path('index.html/', views.index),
+    path('ingresar/', views.ingresar),
+    path('cerrar_sesion/', views.cerrar_sesion),
+    path('populate/', views.cargar_bd),
+    path('sistema_recomendacion/', views.cargar_rs),
+    path('juegos_gustados/', views.juegos_gustados),
+    path('juegos_gratis_por_desarrollador/', views.juegos_gratis_por_desarrollador),
+    path('top_10_juegos_populares/', views.top_10_juegos_populares),
+    path('filtrar_juegos/', views.filtrar_juegos),
+    path('buscar_juegos_texto/', views.buscar_juegos_texto),
+    path('recomendaciones/', views.recomendaciones),
+    path('juegos_similares/', views.juegos_similares),
 ]

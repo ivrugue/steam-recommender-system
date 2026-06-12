@@ -1,0 +1,53 @@
+{% extends "master.html" %}
+
+{% block titulo %}
+    Encontrar juegos similares
+{% endblock %}
+
+{% block contenido %}
+
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <div class="card form-card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row align-items-stretch h-100">
+
+                    <div class="col-md-6">
+                        <h5 class="mb-3">Buscador de juegos</h5>
+                        <div class="mb-3">
+                            <label>Selecciona un juego</label>
+                            {{ formulario.juego }}
+                        </div>
+                        <input type="submit" value="Buscar similares" class="btn btn-primary"/>
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-end">
+                        {% if juego_buscado %}
+                            <a href="{{ juego_buscado.link }}" target="_blank"><img src="{{ juego_buscado.imagen }}" class="img-fluid rounded shadow-sm"></a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    {% if recomendaciones %}
+            <h3 class="mb-3">
+                Top {{ recomendaciones|length }} juegos similares a <a href="{{ juego_buscado.link }}" target="_blank" class="text-light link-hover">{{ juego_buscado.titulo }}</a>
+            </h3>
+            {% for sim, juego in recomendaciones %}
+                {% include "game_card.html" %}
+            {% endfor %}
+
+        {% else %}
+            {% if request.method == "POST" %}
+                <div class="alert alert-info">
+                    No hay recomendaciones disponibles.
+                </div>
+            {% endif %}
+        {% endif %}
+
+{% endblock %}

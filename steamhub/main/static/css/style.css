@@ -1,0 +1,74 @@
+/* Principal */
+body {
+    background-color:#1b2838 !important;
+}
+
+.navbar {
+    background-color:#171D25 !important;
+}
+
+.dropdown-menu {
+    background-color: #3d4450 !important;
+    border: 1px solid #2a3441 !important;
+}
+
+.dropdown-item {
+    color: #dcdedf !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #dcdedf !important;
+    color: #3d4450 !important;
+}
+
+.index-icon {
+    color:#a5c5e7 !important;
+}
+
+/* Cards y buttons */
+.game-card {
+    background-color: #16202d !important;
+    border: none !important;
+}
+
+.form-card,
+.btn-show-more {
+    background-color: rgb(0,0,0,0) !important;
+    border: 3px solid #323e4c !important;
+}
+
+.btn-show-more:hover {
+    background-color: rgb(255,255,255,0.025) !important;
+}
+
+.link-hover:hover {
+    color: #4476d4 !important;
+}
+
+/* Forms */
+input:not([type="submit"]), select, textarea {
+    background: #192433 !important;
+    color: #dcdedf !important;
+    border: 1px solid #4b5c6e !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+select::-webkit-scrollbar {
+    width: 15px;
+}
+
+select::-webkit-scrollbar-track {
+    background: #2b3541;
+}
+
+select::-webkit-scrollbar-thumb {
+    background: #323e4c;
+}
+
+select::-webkit-scrollbar-thumb:hover {
+    background: #4b5c6e;
+}

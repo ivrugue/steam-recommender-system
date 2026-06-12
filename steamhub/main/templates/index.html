@@ -1,0 +1,49 @@
+{% extends 'master.html' %}
+
+{% block titulo %}
+{% endblock %}
+
+{% block contenido %}
+
+<div class="text-center mt-5">
+    <h1 class="display-3 text-white fw-bold d-flex align-items-center justify-content-center">
+        <img src="{{STATIC_URL}}images/steamhub-logo.webp" alt="Logo" height="70" class="me-3">
+        SteamHub
+    </h1>
+
+    <p class="lead text-secondary mt-3">
+        <strong>Explora Steam, descubre tendencias y encuentra nuevos videojuegos.</strong>
+    </p>
+</div>
+
+<hr class="my-5">
+
+<div class="row text-center">
+
+    <div class="col-md-4 mb-4">
+        <i class="fa fa-search fa-3x mb-3 index-icon"></i>
+        <h4>Búsquedas avanzadas</h4>
+        <p class="text-secondary">
+            Busca juegos por fecha, precio, etiquetas o palabras clave.
+        </p>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <i class="fa fa-steam fa-3x mb-3 index-icon"></i>
+        <h4>Exploración de catálogo</h4>
+        <p class="text-secondary">
+            Descubre juegos populares, gratuitos y agrupados por desarrollador.
+        </p>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <i class="fa fa-star fa-3x mb-3 index-icon"></i>
+        <h4>Recomendaciones</h4>
+        <p class="text-secondary">
+            Encuentra nuevos juegos similares y basados en tus preferencias.
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

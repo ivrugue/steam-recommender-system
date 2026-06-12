@@ -1,0 +1,51 @@
+{% extends 'master.html' %}
+
+{% block titulo %} 
+    {% if next_url %}
+        Identifíquese para acceder a esta página
+    {% else %}
+        Login
+    {% endif %}
+{% endblock %}   
+
+{% block contenido %} 
+    <div class="d-flex flex-column justify-content-center align-items-center">
+
+        <div class="col-lg-3">
+            <div class="card form-card shadow-sm">
+                <div class="card-body">
+                    
+                    {% if error %}
+                        <div class="alert alert-danger py-2">
+                            <small>{{ error }}</small>
+                        </div>
+                    {% endif %}
+
+                    <form id="formulario" method="post" action="">
+                    {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">    
+
+                        {% for field in formulario %}
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    {{ field.label }}
+                                </label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">
+                                Acceder
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'master.html' %}
+
+{% block titulo %}
+Búsqueda de videojuegos
+{% endblock %}
+
+{% block contenido %}
+
+    <form id="formulario" method="post" action="">
+    {% csrf_token %}
+        <div class="card form-card shadow-sm mb-4">
+            <div class="card-body">
+
+                <h5 class="mb-3">Buscador por filtros</h5>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Filtros</h6>
+
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Fecha inicio</label>
+                                    {{ formulario.fecha_inicio }}
+                                    <div class="text-danger small">
+                                        {% for error in formulario.fecha_inicio.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Fecha fin</label>
+                                    {{ formulario.fecha_fin }}
+                                    <div class="text-danger small">
+                                        {% for error in formulario.fecha_fin.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Precio máximo</label>
+                                    {{ formulario.precio_max }}
+                                    <div class="text-danger small">
+                                        {% for error in formulario.precio_max.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label>Etiqueta</label>
+                                    {{ formulario.etiqueta }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-1"></div>
+
+                    <div class="col-5">
+                        <h6>Ordenar por:</h6>
+
+                        <div class="mb-2">
+                            {{ formulario.ordenar_por }}
+                        </div>
+                    </div>
+                </div>
+
+                <input type="submit" value="Buscar" class="btn btn-primary"/>
+
+            </div>
+        </div>
+    </form>
+
+    {% if juegos %}
+
+        {% if request.user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h3 class="mb-0">
+                        Total de juegos encontrados: {{ juegos|length }}
+                    </h3>
+
+                    <button type="submit" name="guardar_favoritos" class="btn btn-danger">
+                        <i class="fa fa-heart"></i> Guardar favoritos
+                    </button>
+
+                </div>
+
+                {% for juego in juegos %}
+                    <div class="position-relative mb-3">
+
+                        <div class="position-absolute top-0 end-0 m-3" style="z-index: 10;">
+                            <input type="checkbox"
+                                id="like-{{ juego.pk }}"
+                                name="juegos"
+                                value="{{ juego.pk }}"
+                                class="d-none like-checkbox"
+                                {% if request.user in juego.usuarios_gustan.all %}
+                                    checked
+                                {% endif %}>
+
+                            <label for="like-{{ juego.pk }}" class="text-danger" style="cursor: pointer;">
+                                <i class="fa {% if request.user in juego.usuarios_gustan.all %}fa-heart{% else %}fa-heart-o{% endif %}"></i>
+                            </label>
+                        </div>
+
+                        {% include "game_card.html" %}
+                    </div>
+                {% endfor %}
+            </form>
+
+        {% else %}
+            <h3 class="mb-3">
+                Total de juegos encontrados: {{ juegos|length }}
+            </h3>
+
+            {% for juego in juegos %}
+                <div class="mb-3">
+                    {% include "game_card.html" %}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    {% else %}
+        {% if request.method == "POST" and not formulario.errors %}
+            <div class="alert alert-info">
+                No se encontraron juegos.
+            </div>
+        {% endif %}
+
+    {% endif %}
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".like-checkbox").forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                const icon = document.querySelector(`label[for="${this.id}"] i`);
+
+                if (this.checked) {
+                    icon.classList.remove("fa-heart-o");
+                    icon.classList.add("fa-heart");
+                } else {
+                    icon.classList.remove("fa-heart");
+                    icon.classList.add("fa-heart-o");
+                }
+            });
+        });
+    });
+    </script>
+
+
+{% endblock %}

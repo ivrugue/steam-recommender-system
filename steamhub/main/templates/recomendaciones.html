@@ -1,0 +1,23 @@
+{% extends "master.html" %}
+
+{% block titulo %}
+    Recomendaciones para ti
+{% endblock %}
+
+{% block contenido %}
+
+    {% if recomendaciones %}
+        <h3 class="mb-3">
+            Top {{ recomendaciones|length }} juegos basados en tus gustos
+        </h3>
+        {% for sim, juego in recomendaciones %}
+            {% include "game_card.html" %}
+        {% endfor %}
+
+    {% else %}
+        <div class="alert alert-info">
+            No hay recomendaciones disponibles.
+        </div>
+    {% endif %}
+
+{% endblock %}

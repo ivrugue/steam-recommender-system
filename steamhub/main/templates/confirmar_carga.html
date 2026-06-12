@@ -1,0 +1,40 @@
+{% extends 'master.html' %}
+
+{% block titulo %}
+Confirmar carga
+{% endblock %}
+
+{% block contenido %}
+
+    <div class="d-flex flex-column justify-content-center align-items-center">
+
+        <div class="col-lg-3">
+            <div class="card form-card shadow-sm">
+                <div class="card-body text-center py-4">
+
+                    <p class="mb-4 fs-5">
+                        {{ texto }}
+                    </p>
+
+                    <form id="formulario" method="post" action="">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary">
+                                Sí, cargar
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            {% if ultima_carga %}
+                <div class="text-start text-secondary py-2 fs-6">
+                    <small>Última carga: {{ ultima_carga|date:"d M Y, H:i" }}</small>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}

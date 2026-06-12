@@ -1,0 +1,51 @@
+<div class="card game-card mb-3 shadow-sm text-light">
+  <div class="row g-0">
+
+    <div class="col-md-3 d-flex align-items-center">
+      {% if sim %}
+          <span class="badge badge-sim position-absolute top-0 start-0 text-light px-2 py-1 m-1" style="background-color: rgb(22, 32, 45, 0.75);">
+              {{ sim|floatformat:1 }}% Coincidencia
+          </span>
+      {% endif %}
+
+      <a href="{{ juego.link }}" target="_blank"><img src="{{ juego.imagen }}" class="img-fluid rounded-start" alt="{{ juego.titulo }}"></a>
+    </div>
+    
+    <div class="col-md-8">
+      <div class="card-body">
+
+        <h5 class="card-title"><a href="{{ juego.link }}" target="_blank" class="text-light link-hover">{{ juego.titulo }}</a></h5>
+        <p><small>{{ juego.descripcion }}</small></p>
+        <p class="card-text">
+          <strong>Desarrolladores:</strong>  
+          {% for dev in juego.desarrolladores.all %}
+            {{ dev.nombre }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}       
+          <br>
+          <strong>Peak de jugadores:</strong> {{ juego.peak_jugadores }}
+        </p>
+
+        <p class="card-text">
+          <small class="text-muted">
+            Lanzamiento: 
+            {% if juego.fecha %}
+                {{ juego.fecha|date:"d M Y" }}
+            {% else %}
+                Próximamente
+            {% endif %}
+          </small>
+        </p>
+
+      </div>
+    </div>
+
+    <div class="col-md-1 d-flex align-items-center justify-content-center mb-2">
+        {% if juego.precio is not None %}
+            <span class="badge bg-success px-2 py-1">{{ juego.precio|floatformat:2 }} €</span>
+        {% else %}
+            <span class="badge bg-warning px-2 py-1">No disponible</span>
+        {% endif %}
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,31 @@
+{% extends 'master.html' %}
+
+{% block titulo %}
+Tus juegos favoritos
+{% endblock %}
+
+{% block contenido %}
+
+    {% if juegos %}
+        <h3 class="mb-3">
+            Total de juegos favoritos: {{ juegos|length }}
+        </h3>
+
+        {% for juego in juegos %}
+            {% include "game_card.html" %}
+        {% endfor %}
+
+        <form method="post" class="text-center mt-4"> {% csrf_token %}
+            <button type="submit" name="limpiar_favoritos" class="btn btn-danger"
+                    onclick="return confirm('¿Seguro que quieres eliminar todos tus juegos favoritos?')">
+                <i class="fa fa-heart-o"></i> Quitar todos mis favoritos
+            </button>
+        </form>
+
+    {% else %}
+        <div class="alert alert-info">
+            Todavía no tienes juegos favoritos.
+        </div>
+    {% endif %}
+
+{% endblock %}

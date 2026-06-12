@@ -1,0 +1,62 @@
+{% extends 'master.html' %}
+
+{% block titulo %}
+Juegos gratis por desarrollador
+{% endblock %}
+
+{% block contenido %}
+
+    {% for dev, juegos in devs_juegos.items %}
+        {% if juegos|length > 1 %}
+            <h3 class="mb-3">
+                {{ dev.nombre }} ({{ juegos|length }} juegos)
+            </h3>
+
+            {% for juego in juegos %}
+                {% include "game_card.html" %}
+            {% endfor %}
+
+            <br>
+        {% endif %}
+    {% endfor %}
+
+    <div id="juegos-unicos" style="display:none;">
+        {% for dev, juegos in devs_juegos.items %}
+            {% if juegos|length == 1 %}
+                <h3 class="mb-3">
+                    {{ dev.nombre }} ({{ juegos|length }} juego)
+                </h3>
+
+                {% for juego in juegos %}
+                    {% include "game_card.html" %}
+                {% endfor %}
+
+                <br>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-show-more text-light" onclick="cambiarJuegosUnicos()">
+            Mostrar más
+        </button>
+    </div>
+
+    <script>
+        function cambiarJuegosUnicos() {
+            const single_games = document.getElementById("juegos-unicos");
+            const btn = event.target;
+
+            if (single_games.style.display === "none") {
+                single_games.style.display = "block";
+                btn.innerText = "Mostrar menos";
+            } else {
+                single_games.style.display = "none";
+                btn.innerText = "Mostrar más";
+            }
+        }
+    </script>
+
+{% endblock %}
+

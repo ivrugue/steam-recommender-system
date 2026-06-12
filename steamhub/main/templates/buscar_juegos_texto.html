@@ -1,0 +1,145 @@
+{% extends 'master.html' %}
+
+{% block titulo %}
+    Búsqueda de videojuegos
+{% endblock %}
+
+{% block contenido %}
+    <form id="formulario" method="post" action="">
+        {% csrf_token %}
+
+        <div class="card form-card shadow-sm mb-4">
+            <div class="card-body">
+
+                <h5 class="mb-3">Buscador por palabras clave</h5>
+
+                <div class="mb-3">
+                    {{ formulario.texto }}
+                    <div class="text-secondary small mt-1">
+                        <i class="fa fa-lightbulb-o"></i> Utiliza comillas para buscar por palabras consecutivas
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-auto">
+                        <h6>Buscar en:</h6>
+                        <div class="form-check">
+                            {{ formulario.titulo }} Título
+                        </div>
+                        <div class="form-check">
+                            {{ formulario.descripcion }} Descripción
+                        </div>
+                        <div class="form-check">
+                            {{ formulario.about }} About
+                        </div>
+                        <div class="form-check">
+                            {{ formulario.reviews }} Reseñas
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <h6>Tipo de búsqueda</h6>
+
+                        {% for radio in formulario.tipo_busqueda %}
+                            <div class="form-check">
+                                {{ radio }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        Buscar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+    {% if juegos %}
+
+        {% if request.user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <h3 class="mb-0">
+                        Top {{ juegos|length }} resultados para tu consulta
+                    </h3>
+
+                    <button type="submit" name="guardar_favoritos" class="btn btn-danger">
+                        <i class="fa fa-heart"></i> Guardar favoritos
+                    </button>
+
+                </div>
+
+                {% for juego in juegos %}
+                    <div class="position-relative mb-3">
+
+                        <div class="position-absolute top-0 end-0 m-3" style="z-index: 10;">
+                            <input type="checkbox"
+                                id="like-{{ juego.pk }}"
+                                name="juegos"
+                                value="{{ juego.pk }}"
+                                class="d-none like-checkbox"
+                                {% if request.user in juego.usuarios_gustan.all %}
+                                    checked
+                                {% endif %}>
+
+                            <label for="like-{{ juego.pk }}" class="text-danger" style="cursor: pointer;">
+                                <i class="fa {% if request.user in juego.usuarios_gustan.all %}fa-heart{% else %}fa-heart-o{% endif %}"></i>
+                            </label>
+                        </div>
+
+                        {% include "game_card.html" %}
+                    </div>
+                {% endfor %}
+            </form>
+
+        {% else %}
+            <h3 class="mb-3">
+                Total de juegos encontrados: {{ juegos|length }}
+            </h3>
+
+            {% for juego in juegos %}
+                <div class="mb-3">
+                    {% include "game_card.html" %}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    {% else %}
+        {% if request.method == "POST" and not formulario.errors %}
+            <div class="alert alert-info">
+                No se encontraron juegos.
+            </div>
+        {% endif %}
+
+    {% endif %}
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".like-checkbox").forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                const icon = document.querySelector(`label[for="${this.id}"] i`);
+
+                if (this.checked) {
+                    icon.classList.remove("fa-heart-o");
+                    icon.classList.add("fa-heart");
+                } else {
+                    icon.classList.remove("fa-heart");
+                    icon.classList.add("fa-heart-o");
+                }
+            });
+        });
+    });
+    </script>
+
+
+{% endblock %}
